@@ -1,26 +1,26 @@
 # BMI Calculator
 
-# Description
+<h2>Description</h2>
 A simple BMI calculator for mobile phones, where users can calculate their BMI values depending on age, gender, weight and height. User will get feedback of the BMI value. 
 
-# Table of Contents
-Installation<br>
-Usage<br>
-Contributing<br>
-Credits<br>
-License
+<h3>Table of Contents</h3>
+1. Installation<br>
+2. Usage<br>
+3. Contributing<br>
+4. Credits<br>
+5. License
 
-# Installation
+<h3>1. Installation</h3>
 
-# Usage 
+<h3>2. Usage</h3>
 
-# Contributing
+<h3>3. Contributing</h3>
 
-# Credits
+<h3>4. Credits</h3>
 
 Özgür Deli<br>
 hello@deli-solutions.com
 
-# License
+<h3>5. License</h3>
 
 GNU GPLv3
