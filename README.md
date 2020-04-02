@@ -14,3 +14,5 @@ A simple BMI calculator for mobile phones, where users can calculate their BMI v
 # Credits
 
 # License
+
+GNU GPLv3
