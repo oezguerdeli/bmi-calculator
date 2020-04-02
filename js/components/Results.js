@@ -1,14 +1,59 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, Dimensions, TouchableOpacity, Alert } from 'react-native';
+import { StyleSheet, Text, View, Dimensions, TouchableOpacity, Alert, AsyncStorage } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
-const detailText="Your BMI is in the ideal range: keep it up! A balanced diet and regular physical activity will continue to help you maintain your ideal weight.";
+var detailText = "";
 
 
 export default function Results(props) {
+    const [language, setLanguage] = useState('ENG');
+
+    if(props.resultText=='Anorexia'){
+        detailText="Take care of your health. Please see a doctor and pay attention to a healthy diet. ";
+    }else if(props.resultText=='Underweight'){
+        detailText="Underweight is just as unhealthy for the human body as overweight. Please see a doctor and pay attention to a healthy diet.";
+    }else if(props.resultText=='Normal Weight'){
+        detailText="Your BMI is in the ideal range: keep it up!";
+    }else if(props.resultText=='Overweight'){
+        detailText="If an overweight is calculated according to the BMI, this is by no means synonymous with unhealthy or not fit.";
+    }else if(props.resultText=='Obesity'){
+        detailText="In the case of obesity, a reduction in your body weight is necessary. We advise you to make an appointment with your doctor.";
+    }else{
+        detailText="";
+    }
+
+
+    /*
+    useEffect(() => {
+        let temp = _retrieveData();
+        setLanguage(temp);
+    });
+
+
+    async function _storeData(language) {
+        try {
+            await AsyncStorage.setItem('language', language);
+        } catch (error) {
+            // Error saving data
+        }
+    };
+
+    async function _retrieveData() {
+        try {
+            const value = await AsyncStorage.getItem('language');
+            if (value !== null) { 
+                // We have data!!
+                return value;
+            }
+        } catch (error) {
+            // Error retrieving data
+        }
+    };
+
+    */
 
     function showInformation() {
         Alert.alert(
@@ -18,7 +63,16 @@ export default function Results(props) {
     }
 
     if (props.visible == false) {
-        return (null);
+        return (
+            <View style={styles.container}>
+                <View style={{ alignContent: 'center', justifyContent: 'center', alignItems: 'center' }}>
+                    <View>
+                        <Text style={{ textAlign: 'center' }}>Fill in the data and calculate your BMI.</Text>
+                    </View>
+                </View>
+            </View>
+        );
+
     } else {
         return (
 
@@ -34,7 +88,7 @@ export default function Results(props) {
 
                 <Text style={styles.bmiValue}>{props.bmi}</Text>
 
-                <Text style={[styles.resultStyle,{color: props.color}]}>{props.resultText}</Text>
+                <Text style={[styles.resultStyle, { color: props.color }]}>{props.resultText}</Text>
                 <Text style={styles.detailStyle}>{detailText}</Text>
             </View>
 
@@ -46,6 +100,7 @@ export default function Results(props) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+
     },
     information: {
         textAlign: 'center',
