@@ -23,7 +23,7 @@ export default function App() {
   const [resultTextColor, setResultTextColor] = useState('');
   const [resultText, setResultText] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
-  const [isEnabled, setIsEnabled] = useState(false);
+  const [isEnabled, setIsEnabled] = useState(true);
 
   function bannerError() {
     console.log("An error");
@@ -65,6 +65,14 @@ export default function App() {
     }
   };
 
+  useEffect(async () => {    
+    let temp = await _retrieveData();
+    if(temp=='de' || temp=='en'){
+      i18n.locale = temp;
+    }
+    
+  },[]);
+
 
   /*
     useEffect(() => {    
@@ -72,8 +80,6 @@ export default function App() {
       setLanguage(temp);
       //alert('Test für Sprache: '+temp);
     },[]);
-  
-    
   
     
     async function _retrieveData () {
@@ -102,7 +108,7 @@ export default function App() {
     }
   }
 
-  function CalculateBmi() {
+  async function CalculateBmi() {
     //check whether entries have been made
     let temp, tempWeight, tempHeight;
     if (weight == 0 || height == 0 || age == 0 || gender == '') {
@@ -123,66 +129,66 @@ export default function App() {
         temp = Math.round(temp * 100 + Number.EPSILON) / 100;
 
         setBmi(temp);
-        CalculateResult();
+        CalculateResult(temp);
 
       } else return;
 
     }
   }
 
-  function CalculateResult() {
+  async function CalculateResult(bmiTemp) {
     let help = age;
     if (gender == 'M') {
       switch (age) {
         case '1' - '7': {
-          checkBMI(12.2, 13.3, 18.0, 23.1);
+          checkBMI(12.2, 13.3, 18.0, 23.1, bmiTemp);
         }; break;
         case '8': {
-          checkBMI(12.2, 13.2, 18.8, 22.3);
+          checkBMI(12.2, 13.2, 18.8, 22.3, bmiTemp);
         }; break;
         case '9': {
-          checkBMI(13.0, 13.7, 19.8, 23.4);
+          checkBMI(13.0, 13.7, 19.8, 23.4, bmiTemp);
         }; break;
         case '10': {
-          checkBMI(13.4, 14.2, 20.7, 23.4);
+          checkBMI(13.4, 14.2, 20.7, 23.4, bmiTemp);
         }; break;
         case '11': {
-          checkBMI(13.8, 14.7, 20.8, 22.9);
+          checkBMI(13.8, 14.7, 20.8, 22.9, bmiTemp);
         }; break;
         case '12': {
-          checkBMI(14.8, 15, 21.5, 23.4);
+          checkBMI(14.8, 15, 21.5, 23.4, bmiTemp);
         }; break;
         case '13': {
-          checkBMI(15.2, 15.6, 22, 24.4);
+          checkBMI(15.2, 15.6, 22, 24.4, bmiTemp);
         }; break;
         case '14': {
-          checkBMI(16.2, 17, 23.2, 26);
+          checkBMI(16.2, 17, 23.2, 26, bmiTemp);
         }; break;
         case '15': {
-          checkBMI(16.9, 17.8, 23.2, 27.6);
+          checkBMI(16.9, 17.8, 23.2, 27.6, bmiTemp);
         }; break;
         case '16': {
-          checkBMI(16.9, 17.8, 22.8, 24.2);
+          checkBMI(16.9, 17.8, 22.8, 24.2, bmiTemp);
         }; break;
         case '17': {
-          checkBMI(17.1, 17.8, 23.4, 25.7);
+          checkBMI(17.1, 17.8, 23.4, 25.7, bmiTemp);
         }; break;
         case '18': {
-          checkBMI(17.6, 18.3, 23.5, 25);
+          checkBMI(17.6, 18.3, 23.5, 25, bmiTemp);
         }; break;
         default: {
-          if (age > 18 && age < 25) {
-            checkBMI(16, 18, 24, 29);
-          } else if (age > 24 && age < 35) {
-            checkBMI(17, 19, 26, 30);
-          } else if (age > 34 && age < 45) {
-            checkBMI(18, 20, 27, 31);
-          } else if (age > 44 && age < 55) {
-            checkBMI(19, 21, 28, 32);
-          } else if (age > 54 && age < 67) {
-            checkBMI(20, 22, 29, 33);
-          } else if (age > 66) {
-            checkBMI(21, 23, 30, 34);
+          if (help > 18 && help < 25) {
+            checkBMI(16, 18, 24, 29, bmiTemp);
+          } else if (help > 24 && help < 35) {
+            checkBMI(17, 19, 26, 30, bmiTemp);
+          } else if (help > 34 && help < 45) {
+            checkBMI(18, 20, 27, 31, bmiTemp);
+          } else if (help > 44 && help < 55) {
+            checkBMI(19, 21, 28, 32, bmiTemp);
+          } else if (help > 54 && help < 67) {
+            checkBMI(20, 22, 29, 33, bmiTemp);
+          } else if (help > 66) {
+            checkBMI(21, 23, 30, 34, bmiTemp);
           } else {
             Alert.alert(
               i18n.t('noValidHeader'),
@@ -195,54 +201,54 @@ export default function App() {
     } else if (gender == 'F') {
       switch (age) {
         case '7': {
-          checkBMI(13, 13.6, 19.2, 21.1);
+          checkBMI(13, 13.6, 19.2, 21.1, bmiTemp);
         }; break;
         case '8': {
-          checkBMI(12.5, 14.2, 19.3, 22.6);
+          checkBMI(12.5, 14.2, 19.3, 22.6, bmiTemp);
         }; break;
         case '9': {
-          checkBMI(12.8, 13.7, 19.4, 21.6);
+          checkBMI(12.8, 13.7, 19.4, 21.6, bmiTemp);
         }; break;
         case '10': {
-          checkBMI(13.9, 14.6, 21.4, 25);
+          checkBMI(13.9, 14.6, 21.4, 25, bmiTemp);
         }; break;
         case '11': {
-          checkBMI(14, 14.3, 21.2, 23);
+          checkBMI(14, 14.3, 21.2, 23, bmiTemp);
         }; break;
         case '12': {
-          checkBMI(14.6, 14.8, 22, 24.8);
+          checkBMI(14.6, 14.8, 22, 24.8, bmiTemp);
         }; break;
         case '13': {
-          checkBMI(15.6, 16.2, 21.7, 24.5);
+          checkBMI(15.6, 16.2, 21.7, 24.5, bmiTemp);
         }; break;
         case '14': {
-          checkBMI(16.1, 16.7, 22.6, 25.7);
+          checkBMI(16.1, 16.7, 22.6, 25.7, bmiTemp);
         }; break;
         case '15': {
-          checkBMI(17, 17.8, 23.1, 25.9);
+          checkBMI(17, 17.8, 23.1, 25.9, bmiTemp);
         }; break;
         case '16': {
-          checkBMI(17.8, 18.5, 23.7, 26);
+          checkBMI(17.8, 18.5, 23.7, 26, bmiTemp);
         }; break;
         case '17': {
-          checkBMI(17.6, 18.6, 23.7, 25.8);
+          checkBMI(17.6, 18.6, 23.7, 25.8, bmiTemp);
         }; break;
         case '18': {
-          checkBMI(17.6, 18.6, 24, 26.8);
+          checkBMI(17.6, 18.6, 24, 26.8, bmiTemp);
         }; break;
         default: {
           if (age > 18 && age < 25) {
-            checkBMI(16, 18, 24, 29);
+            checkBMI(16, 18, 24, 29, bmiTemp);
           } else if (age > 24 && age < 35) {
-            checkBMI(17, 19, 26, 30);
+            checkBMI(17, 19, 26, 30, bmiTemp);
           } else if (age > 34 && age < 45) {
-            checkBMI(18, 20, 27, 31);
+            checkBMI(18, 20, 27, 31, bmiTemp);
           } else if (age > 44 && age < 55) {
-            checkBMI(19, 21, 28, 32);
+            checkBMI(19, 21, 28, 32, bmiTemp);
           } else if (age > 54 && age < 67) {
-            checkBMI(20, 22, 29, 33);
+            checkBMI(20, 22, 29, 33, bmiTemp);
           } else if (age > 66) {
-            checkBMI(21, 23, 30, 34);
+            checkBMI(21, 23, 30, 34, bmiTemp);
           } else {
             Alert.alert(
               i18n.t('noValidHeader'),
@@ -256,25 +262,27 @@ export default function App() {
 
   }
 
-  async function checkBMI(starkUntergewicht, untergewicht, uebergewicht, starkUebergewicht) {
-    if (bmi < starkUntergewicht) {
+  async function checkBMI(starkUntergewicht, untergewicht, uebergewicht, starkUebergewicht, bmiTemp) {
+    if (starkUntergewicht > bmiTemp ) {
       setResultTextColor('red');
       setResultText(i18n.t('anorexia'));
-    } else if (bmi > starkUntergewicht && bmi < untergewicht) {
+    } else if (bmiTemp > starkUntergewicht && bmiTemp < untergewicht) {
       setResultTextColor('orange');
       setResultText(i18n.t('underWeight'));
-    } else if (bmi > untergewicht && bmi < uebergewicht) {
+    } else if (bmiTemp > untergewicht && bmiTemp < uebergewicht) {
       setResultTextColor('green');
       setResultText(i18n.t('normalWeight'));
-    } else if (bmi > starkUebergewicht && bmi < uebergewicht) {
+    } else if (bmiTemp < starkUebergewicht && bmiTemp > uebergewicht) {
       setResultText(i18n.t('overWeight'));
       setResultTextColor('orange');
-    } else if (bmi > uebergewicht) {
+    } else if (bmiTemp > uebergewicht) {
       setResultTextColor('red');
       setResultText(i18n.t('obesity'));
     }
-
-    setVisibleResults(true);
+    setTimeout(()=>{
+      setVisibleResults(true);
+    },500)
+    
   }
 
   function SelectGender(gender) {
@@ -295,11 +303,11 @@ export default function App() {
 
     <View style={styles.container}>
 
-      {/*
-          <TouchableOpacity style={styles.settingButton} onPress={() => setModalVisible(!modalVisible)}>
-            <Icon name='settings-outline' size={25} />
-          </TouchableOpacity>
-        */
+      {
+        <TouchableOpacity style={styles.settingButton} onPress={() => setModalVisible(!modalVisible)}>
+          <Icon name='settings-outline' size={25} />
+        </TouchableOpacity>
+
       }
 
       <View>
@@ -386,12 +394,6 @@ export default function App() {
         <Results visible={visibleResults} bmi={bmi} resultTextProp={resultText} color={resultTextColor} />
       </View>
 
-      <AdMobBanner style={styles.bottomBanner}
-        bannerSize="fullBanner"
-        adUnitID="ca-app-pub-1122301178144342/5291335765" // Test ID, Replace with your-admob-unit-id
-        testDeviceID="EMULATOR"
-        servePersonalizedAds // true or false
-        onDidFailToReceiveAdWithError={bannerError()} />
 
       <View style={styles.buttonView}>
         <Button title={i18n.t('buttonText')} onPress={() => CalculateBmi()}></Button>
@@ -469,7 +471,7 @@ const styles = StyleSheet.create({
     borderWidth: 2.5,
     borderRadius: 10,
     width: windowWidth * 0.85,
-    height: windowHeight * 0.2,
+    height: windowHeight * 0.3,
     shadowColor: "#000",
     shadowOffset: {
       width: 2,
@@ -482,7 +484,7 @@ const styles = StyleSheet.create({
   },
   buttonView: {
     position: 'absolute',
-    bottom: windowHeight * 0.2,
+    bottom: 30,
     width: '80%'
   },
   modalView: {
@@ -503,5 +505,5 @@ const styles = StyleSheet.create({
   bottomBanner: {
     position: "absolute",
     bottom: 0
-},
+  },
 });

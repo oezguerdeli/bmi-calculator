@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, Dimensions, TouchableOpacity, Alert, AsyncStorage } from 'react-native';
+import { StyleSheet, Text, View, Dimensions, TouchableOpacity, Alert, AsyncStorage, Share } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import i18n from './i18n';
@@ -57,6 +57,26 @@ export default function Results(props) {
 
     */
 
+    async function ShareData() {
+        try {
+            const result = await Share.share({
+              message:
+                i18n.t('shareText')+' '+props.bmi,
+            });
+            if (result.action === Share.sharedAction) {
+              if (result.activityType) {
+                // shared with activity type of result.activityType
+              } else {
+                // shared
+              }
+            } else if (result.action === Share.dismissedAction) {
+              // dismissed
+            }
+          } catch (error) {
+            alert(error.message);
+          }
+    }
+
     function showInformation() {
         Alert.alert(
             'Information',
@@ -91,6 +111,10 @@ export default function Results(props) {
                 <Text style={styles.bmiValue}>{props.bmi}</Text>
 
                 <Text style={[styles.resultStyle, { color: props.color }]}>{props.resultTextProp}</Text>
+
+                <TouchableOpacity style={{ paddingTop: 20 }} onPress={() => ShareData()}>
+                    <Icon style={{ textAlign: 'center' }} name='share' size={30} />
+                </TouchableOpacity>
                 {
                     /*
                     <Text style={styles.detailStyle}>{detailText}</Text>
@@ -119,7 +143,7 @@ const styles = StyleSheet.create({
     bmiValue: {
         paddingTop: 5,
         textAlign: 'center',
-        fontSize: 35
+        fontSize: 30
     },
     resultStyle: {
         paddingTop: 5,
