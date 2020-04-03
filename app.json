@@ -2,6 +2,8 @@
   "expo": {
     "name": "BMI Calculator",
     "slug": "bmiCalculator2",
+    "privacy": "public",
+    "sdkVersion": "36.0.0",
     "platforms": [
       "ios",
       "android",
@@ -22,12 +24,15 @@
       "**/*"
     ],
     "android": {
+      "package": "com.delisolutions.bmicalculator",
+      "versionCode": 1,
       "config": {
         "googleMobileAdsAppId": "ca-app-pub-1122301178144342~1543662444"
       }
     },
     "ios": {
       "supportsTablet": true,
+      "bundleIdentifier": "com.delisolutions.bmicalculator",
       "config": {
         "googleMobileAdsAppId": "ca-app-pub-1122301178144342~1543662444" 
       }
