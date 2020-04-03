@@ -1,22 +1,19 @@
-/*
-import I18n from "i18n-js";
-import * as RNLocalize from "react-native-localize";
-import en from './en';
-import de from './de';
+import i18n from 'i18n-js';
+import { NativeModules } from 'react-native';
 
-const locales = RNLocalize.getLocales();
+//import translation files
+import en from './en.json';
+import de from './de.json';
 
-if (Array.isArray(locales)) {
-    I18n.locale = locales[0].languageTag;
-}
+//get current language of phone
+const phoneLanguage = NativeModules.I18nManager.localeIdentifier;
 
-I18n.fallbacks = true;
-
-I18n.translations = {
+i18n.defaultLocale = 'en';
+i18n.locale = phoneLanguage;
+i18n.fallbacks = true;
+i18n.translations = {
     en,
     de
 };
 
-export default I18n;
-
-*/
+export default i18n;

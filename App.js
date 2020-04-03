@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, TextInput, View, Button, Dimensions, TouchableOpacity, Alert, Modal, Switch, AsyncStorage } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { AdMobBanner, AdMobInterstitial, PublisherBanner, AdMobRewarded } from 'expo-ads-admob';
 
 import Results from './js/components/Results';
-import I18n from './js/components/I18n';
+import i18n from './js/components/i18n';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
+let resultColor1, resultText1;
 
 export default function App() {
   const [language, setLanguage] = useState('ENG');
@@ -23,34 +25,35 @@ export default function App() {
   const [modalVisible, setModalVisible] = useState(false);
   const [isEnabled, setIsEnabled] = useState(false);
 
+  function bannerError() {
+    console.log("An error");
+    return;
+  }
+
   const toggleSwitch = () => {
     setIsEnabled(previousState => !previousState);
-    //SaveNewLanguage();
+    SaveNewLanguage();
   }
 
-  /*
-
-  useEffect(() => {    
-    let temp = _retrieveData();
-    setLanguage(temp);
-    //alert('Test für Sprache: '+temp);
-  },[]);
-
-  function SaveNewLanguage(){
-    if(isEnabled){
+  function SaveNewLanguage() {
+    if (isEnabled) {
+      i18n.locale = 'de';
+      _storeData('DE');
+    } else {
       _storeData('ENG');
-    }else _storeData('DE');
+      i18n.locale = 'en';
+    }
   }
 
-  async function _storeData (language) {
+  async function _storeData(language) {
     try {
-      await AsyncStorage.setItem('language', language );
+      await AsyncStorage.setItem('language', language);
     } catch (error) {
       // Error saving data
     }
   };
 
-  async function _retrieveData () {
+  async function _retrieveData() {
     try {
       const value = await AsyncStorage.getItem('language');
       if (value !== null) {
@@ -62,24 +65,68 @@ export default function App() {
     }
   };
 
-  */
+
+  /*
+    useEffect(() => {    
+      let temp = _retrieveData();
+      setLanguage(temp);
+      //alert('Test für Sprache: '+temp);
+    },[]);
+  
+    
+  
+    
+    async function _retrieveData () {
+      try {
+        const value = await AsyncStorage.getItem('language');
+        if (value !== null) {
+          // We have data!!
+          return value;
+        }
+      } catch (error) {
+        // Error retrieving data
+      }
+    };
+  
+    */
+
+  function CheckIfInputIsValid(checking, value) {
+    if (isNaN(checking)) {
+      Alert.alert(
+        'No valid entry',
+        'Please check your ' + value + '.',
+      );
+      return false;
+    } else {
+      return true;
+    }
+  }
 
   function CalculateBmi() {
     //check whether entries have been made
+    let temp, tempWeight, tempHeight;
     if (weight == 0 || height == 0 || age == 0 || gender == '') {
       setVisibleResults(false);
       Alert.alert(
-        'Missing values',
-        'Please enter all values.',
+        i18n.t('missingValueHeader'),
+        i18n.t('missingValueText'),
       );
 
     } else {
       //entries have been made, calculate bmi
-      let temp = weight / ((height / 100) * (height / 100));
-      temp = Math.round(temp * 100 + Number.EPSILON) / 100;
-      setBmi(temp);
-      CalculateResult();
-      setVisibleResults(true);
+
+      if (CheckIfInputIsValid(age, 'age')) {
+        tempWeight = parseInt(weight, 10);
+        tempHeight = parseInt(height, 10);
+
+        temp = tempWeight / ((tempHeight / 100) * (tempHeight / 100));
+        temp = Math.round(temp * 100 + Number.EPSILON) / 100;
+
+        setBmi(temp);
+        CalculateResult();
+
+      } else return;
+
     }
   }
 
@@ -125,21 +172,21 @@ export default function App() {
         }; break;
         default: {
           if (age > 18 && age < 25) {
-            checkBMI(0, 18, 24, 29);
+            checkBMI(16, 18, 24, 29);
           } else if (age > 24 && age < 35) {
-            checkBMI(0, 19, 26, 30);
+            checkBMI(17, 19, 26, 30);
           } else if (age > 34 && age < 45) {
-            checkBMI(0, 20, 27, 31);
+            checkBMI(18, 20, 27, 31);
           } else if (age > 44 && age < 55) {
-            checkBMI(0, 21, 28, 32);
+            checkBMI(19, 21, 28, 32);
           } else if (age > 54 && age < 67) {
-            checkBMI(0, 22, 29, 33);
+            checkBMI(20, 22, 29, 33);
           } else if (age > 66) {
-            checkBMI(0, 23, 30, 34);
+            checkBMI(21, 23, 30, 34);
           } else {
             Alert.alert(
-              'No valid values',
-              'Please check your values.',
+              i18n.t('noValidHeader'),
+              i18n.t('noValidText'),
             );
           }
         }
@@ -185,21 +232,21 @@ export default function App() {
         }; break;
         default: {
           if (age > 18 && age < 25) {
-            checkBMI(0, 18, 24, 29);
+            checkBMI(16, 18, 24, 29);
           } else if (age > 24 && age < 35) {
-            checkBMI(0, 19, 26, 30);
+            checkBMI(17, 19, 26, 30);
           } else if (age > 34 && age < 45) {
-            checkBMI(0, 20, 27, 31);
+            checkBMI(18, 20, 27, 31);
           } else if (age > 44 && age < 55) {
-            checkBMI(0, 21, 28, 32);
+            checkBMI(19, 21, 28, 32);
           } else if (age > 54 && age < 67) {
-            checkBMI(0, 22, 29, 33);
+            checkBMI(20, 22, 29, 33);
           } else if (age > 66) {
-            checkBMI(0, 23, 30, 34);
+            checkBMI(21, 23, 30, 34);
           } else {
             Alert.alert(
-              'No valid values',
-              'Please check your values.',
+              i18n.t('noValidHeader'),
+              i18n.t('noValidText'),
             );
           }
         }
@@ -209,22 +256,22 @@ export default function App() {
 
   }
 
-  function checkBMI(starkUntergewicht, untergewicht, uebergewicht, starkUebergewicht) {
+  async function checkBMI(starkUntergewicht, untergewicht, uebergewicht, starkUebergewicht) {
     if (bmi < starkUntergewicht) {
       setResultTextColor('red');
-      setResultText("Anorexia");
+      setResultText(i18n.t('anorexia'));
     } else if (bmi > starkUntergewicht && bmi < untergewicht) {
       setResultTextColor('orange');
-      setResultText("Underweight");
+      setResultText(i18n.t('underWeight'));
     } else if (bmi > untergewicht && bmi < uebergewicht) {
       setResultTextColor('green');
-      setResultText("Normal Weight");
+      setResultText(i18n.t('normalWeight'));
     } else if (bmi > starkUebergewicht && bmi < uebergewicht) {
-      setResultText("Overweight");
+      setResultText(i18n.t('overWeight'));
       setResultTextColor('orange');
     } else if (bmi > uebergewicht) {
       setResultTextColor('red');
-      setResultText("Obesity");
+      setResultText(i18n.t('obesity'));
     }
 
     setVisibleResults(true);
@@ -249,9 +296,9 @@ export default function App() {
     <View style={styles.container}>
 
       {/*
-        <TouchableOpacity style={styles.settingButton} onPress={() => setModalVisible(!modalVisible)}>
-          <Icon name='settings-outline' size={25} />
-        </TouchableOpacity>
+          <TouchableOpacity style={styles.settingButton} onPress={() => setModalVisible(!modalVisible)}>
+            <Icon name='settings-outline' size={25} />
+          </TouchableOpacity>
         */
       }
 
@@ -261,12 +308,12 @@ export default function App() {
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
               <View>
-                <Text style={{ fontSize: 20 }}>Settings</Text>
+                <Text style={{ fontSize: 20 }}>{i18n.t('settingsText')}</Text>
               </View>
 
               <View style={{ paddingTop: 40 }}>
                 <View>
-                  <Text style={{ fontSize: 15 }}>Change Language</Text>
+                  <Text style={{ fontSize: 15 }}>{i18n.t('changeLanguage')}</Text>
                 </View>
                 <View style={{ paddingTop: 20, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                   <Text>DE</Text>
@@ -282,7 +329,7 @@ export default function App() {
               </View>
 
               <View style={{ paddingTop: 40 }}>
-                <Button title="Save Changes" onPress={() => setModalVisible(!modalVisible)}></Button>
+                <Button title={i18n.t('saveChangesButton')} onPress={() => setModalVisible(!modalVisible)}></Button>
               </View>
             </View>
           </View>
@@ -292,7 +339,7 @@ export default function App() {
 
 
       <View style={styles.headerView}>
-        <Text style={styles.headerText}>BMI Calculator</Text>
+        <Text style={styles.headerText}>{i18n.t('headerText')}</Text>
       </View>
 
       <View>
@@ -317,30 +364,37 @@ export default function App() {
 
           </View>
           <View style={styles.inputView}>
-            <TextInput style={styles.input} placeholder="Age" keyboardType="numeric" returnKeyType="done" maxLength={3} onChangeText={(value) => setAge(value)}></TextInput>
-            <Text style={styles.informationText}>in years</Text>
+            <TextInput style={styles.input} placeholder={i18n.t('ageText')} keyboardType="numeric" returnKeyType="done" maxLength={3} onChangeText={(value) => setAge(value)}></TextInput>
+            <Text style={styles.informationText}>{i18n.t('ageDetail')}</Text>
           </View>
         </View>
 
         <View style={styles.inputSection}>
           <View style={styles.inputView}>
-            <TextInput style={styles.input} placeholder="Weight" keyboardType="numeric" returnKeyType="done" maxLength={5} onChangeText={(value) => setWeight(value)}></TextInput>
-            <Text style={styles.informationText}>in kg</Text>
+            <TextInput style={styles.input} placeholder={i18n.t('weightText')} keyboardType="numeric" returnKeyType="done" maxLength={5} onChangeText={(value) => setWeight(value)}></TextInput>
+            <Text style={styles.informationText}>{i18n.t('weightDetail')}</Text>
           </View>
           <View style={styles.inputView}>
-            <TextInput style={styles.input} placeholder="Height" keyboardType="numeric" returnKeyType="done" maxLength={5} onChangeText={(value) => setHeight(value)}></TextInput>
-            <Text style={styles.informationText}>in cm</Text>
+            <TextInput style={styles.input} placeholder={i18n.t('heightText')} keyboardType="numeric" returnKeyType="done" maxLength={5} onChangeText={(value) => setHeight(value)}></TextInput>
+            <Text style={styles.informationText}>{i18n.t('heightDetail')}</Text>
           </View>
         </View>
 
       </View>
 
       <View style={styles.results}>
-        <Results visible={visibleResults} bmi={bmi} resultText={resultText} color={resultTextColor} />
+        <Results visible={visibleResults} bmi={bmi} resultTextProp={resultText} color={resultTextColor} />
       </View>
 
+      <AdMobBanner style={styles.bottomBanner}
+        bannerSize="fullBanner"
+        adUnitID="ca-app-pub-1122301178144342/5291335765" // Test ID, Replace with your-admob-unit-id
+        testDeviceID="EMULATOR"
+        servePersonalizedAds // true or false
+        onDidFailToReceiveAdWithError={bannerError()} />
+
       <View style={styles.buttonView}>
-        <Button title="Calculate Your BMI" onPress={() => CalculateBmi()}></Button>
+        <Button title={i18n.t('buttonText')} onPress={() => CalculateBmi()}></Button>
       </View>
 
     </View>
@@ -367,8 +421,8 @@ const styles = StyleSheet.create({
   },
   headerView: {
     alignItems: 'center',
-    marginTop: 40,
-    marginBottom: 20
+    marginTop: 35,
+    marginBottom: 10
   },
   headerText: {
     color: "black",
@@ -388,7 +442,7 @@ const styles = StyleSheet.create({
     borderWidth: 2.5,
     borderRadius: 10,
     width: windowWidth * 0.4,
-    height: windowHeight * 0.2,
+    height: windowHeight * 0.15,
     margin: 10,
     shadowColor: "#000",
     shadowOffset: {
@@ -409,13 +463,13 @@ const styles = StyleSheet.create({
   },
   results: {
     marginTop: 10,
-    paddingTop: 30,
+    paddingTop: 20,
     borderColor: 'white',
     backgroundColor: 'white',
     borderWidth: 2.5,
     borderRadius: 10,
     width: windowWidth * 0.85,
-    height: windowHeight * 0.3,
+    height: windowHeight * 0.2,
     shadowColor: "#000",
     shadowOffset: {
       width: 2,
@@ -428,7 +482,8 @@ const styles = StyleSheet.create({
   },
   buttonView: {
     position: 'absolute',
-    bottom: 15,
+    bottom: windowHeight * 0.2,
+    width: '80%'
   },
   modalView: {
     margin: 20,
@@ -445,4 +500,8 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
     elevation: 5
   },
+  bottomBanner: {
+    position: "absolute",
+    bottom: 0
+},
 });

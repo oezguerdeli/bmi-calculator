@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "HelloWorld",
+    "name": "BMI Calculator",
     "slug": "bmiCalculator2",
     "platforms": [
       "ios",
@@ -21,8 +21,16 @@
     "assetBundlePatterns": [
       "**/*"
     ],
+    "android": {
+      "config": {
+        "googleMobileAdsAppId": "ca-app-pub-1122301178144342~1543662444"
+      }
+    },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "config": {
+        "googleMobileAdsAppId": "ca-app-pub-1122301178144342~1543662444" 
+      }
     }
   }
 }
