@@ -19,7 +19,8 @@ A simple BMI calculator for mobile phones, where users can calculate their BMI v
 <h3>4. Credits</h3>
 
 Özgür Deli<br>
-hello@deli-solutions.com
+office@wedev-it.at
+www.wedev-it.at
 
 <h3>5. License</h3>
 
